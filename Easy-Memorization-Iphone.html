@@ -169,6 +169,36 @@
   }
   .gate-submit:disabled{opacity:.55;}
   .gate-note{font-size:.75em; color:var(--ink-soft); text-align:center; margin-top:14px; line-height:1.5;}
+
+  /* ---- floating feedback button + modal ---- */
+  #fb-fab{
+    position:fixed; bottom:18px; left:50%; transform:translateX(-50%);
+    background:var(--teal-800); color:#fff; border:none; border-radius:30px;
+    padding:12px 22px; font-size:.95em; font-weight:700; box-shadow:0 4px 16px rgba(0,0,0,.25);
+    cursor:pointer; z-index:60; display:flex; align-items:center; gap:8px;
+  }
+  #fb-fab:active{ background:var(--teal-900); }
+  #fb-modal{
+    position:fixed; inset:0; background:rgba(31,69,80,.55); z-index:120;
+    display:none; align-items:center; justify-content:center; padding:20px;
+  }
+  #fb-modal.open{ display:flex; }
+  .fb-card{
+    background:var(--cream-2); border-radius:20px; padding:22px 20px; max-width:420px; width:100%;
+    box-shadow:0 10px 40px rgba(0,0,0,.3);
+  }
+  .fb-title{font-size:1.15em; font-weight:800; margin:0 0 4px; color:var(--ink);}
+  .fb-context{font-size:.82em; color:var(--ink-soft); margin:0 0 14px;}
+  .fb-textarea{
+    width:100%; min-height:110px; padding:12px 14px; border-radius:12px; border:1.5px solid var(--line);
+    font-size:1em; font-family:inherit; color:var(--ink); resize:vertical; outline:none;
+  }
+  .fb-textarea:focus{border-color:var(--teal-700); box-shadow:0 0 0 3px rgba(53,111,128,.15);}
+  .fb-btn-row{display:flex; gap:10px; margin-top:14px;}
+  .fb-send{flex:1; background:var(--teal-800); color:#fff; border:none; border-radius:12px; padding:12px; font-weight:800; cursor:pointer;}
+  .fb-cancel{background:#fff; border:1.5px solid var(--line); border-radius:12px; padding:12px 18px; font-weight:700; cursor:pointer; color:var(--ink-soft);}
+  .fb-thanks{font-size:.9em; color:var(--green); text-align:center; margin-top:10px; display:none;}
+
 </style>
 </head>
 <body>
@@ -190,6 +220,20 @@
   </div>
 </div>
 
+
+<button id="fb-fab" onclick="openFeedback()">💬 <span>הערה או בקשה</span></button>
+<div id="fb-modal">
+  <div class="fb-card">
+    <p class="fb-title">יש לך הערה או בקשה?</p>
+    <p class="fb-context" id="fb-context-line"></p>
+    <textarea class="fb-textarea" id="fb-text" placeholder="כתבו כאן בחופשיות..."></textarea>
+    <div class="fb-btn-row">
+      <button class="fb-send" id="fb-send-btn" onclick="submitFeedback()">שליחה</button>
+      <button class="fb-cancel" onclick="closeFeedback()">ביטול</button>
+    </div>
+    <p class="fb-thanks" id="fb-thanks">תודה! ההערה נשלחה.</p>
+  </div>
+</div>
 <script>
 const CATEGORIES = [
   {
@@ -556,6 +600,8 @@ let searchCaret = null; // caret position to restore after re-render
 
 const STORAGE_KEY = "iphone-bekalut-learned";
 const REG_STORAGE_KEY = "iphone-bekalut-registered";
+const USER_INFO_KEY = REG_STORAGE_KEY + "-userinfo";
+const APP_NAME = "אייפון-בקלות";
 
 /* Universal storage: tries window.storage (works inside claude.ai artifacts),
    falls back to localStorage (works when the file is shared/opened anywhere else). */
@@ -737,8 +783,9 @@ function toggleOpen(catId, idx){
   openStep[key] = !openStep[key];
   render();
 }
-function goHome(){ view={name:"home"}; search=""; render(); window.scrollTo(0,0); }
-function goCategory(id){ view={name:"category", id}; render(); window.scrollTo(0,0); }
+let currentContextName = "מסך ראשי";
+function goHome(){ view={name:"home"}; search=""; currentContextName="מסך ראשי"; render(); window.scrollTo(0,0); }
+function goCategory(id){ view={name:"category", id}; const c=findCategory(id); currentContextName = c ? c.name : id; render(); window.scrollTo(0,0); }
 function changeScale(delta){
   scale = Math.max(0.85, Math.min(1.5, +(scale+delta).toFixed(2)));
   document.documentElement.style.setProperty("--scale", scale);
@@ -960,6 +1007,7 @@ async function handleGateSubmit(){
       params.append("city", city);
       params.append("org", org);
       params.append("deviceType", detectDeviceType());
+      params.append("appName", APP_NAME);
       params.append("timestamp", new Date().toISOString());
       await fetch(REG_ENDPOINT_URL, {
         method:"POST",
@@ -970,6 +1018,7 @@ async function handleGateSubmit(){
     }catch(e){ console.error("registration send failed", e); }
   }
 
+  await universalSet(USER_INFO_KEY, JSON.stringify({first, last, phone}));
   await universalSet(REG_STORAGE_KEY, "1");
   document.getElementById("gate").style.display = "none";
   startApp();
@@ -977,6 +1026,59 @@ async function handleGateSubmit(){
 
 function startApp(){
   loadProgress();
+}
+
+
+/* ================= floating feedback ================= */
+async function openFeedback(){
+  document.getElementById("fb-context-line").textContent = "הקשר: " + currentContextName;
+  document.getElementById("fb-text").value = "";
+  document.getElementById("fb-thanks").style.display = "none";
+  document.getElementById("fb-send-btn").style.display = "block";
+  document.getElementById("fb-modal").classList.add("open");
+}
+function closeFeedback(){
+  document.getElementById("fb-modal").classList.remove("open");
+}
+async function submitFeedback(){
+  const text = document.getElementById("fb-text").value.trim();
+  if(!text) return;
+  const btn = document.getElementById("fb-send-btn");
+  btn.disabled = true;
+  btn.textContent = "שולח...";
+
+  let info = { first:"", last:"", phone:"" };
+  try{
+    const raw = await universalGet(USER_INFO_KEY);
+    if(raw) info = JSON.parse(raw);
+  }catch(e){ /* ignore */ }
+
+  if(REG_ENDPOINT_URL && REG_ENDPOINT_URL.indexOf("REPLACE_WITH") === -1){
+    try{
+      const params = new URLSearchParams();
+      params.append("type", "feedback");
+      params.append("firstName", info.first || "");
+      params.append("lastName", info.last || "");
+      params.append("phone", info.phone || "");
+      params.append("context", currentContextName);
+      params.append("comment", text);
+      params.append("appName", APP_NAME);
+      params.append("deviceType", detectDeviceType());
+      params.append("timestamp", new Date().toISOString());
+      await fetch(REG_ENDPOINT_URL, {
+        method:"POST",
+        mode:"no-cors",
+        headers:{ "Content-Type":"application/x-www-form-urlencoded" },
+        body: params.toString()
+      });
+    }catch(e){ console.error("feedback send failed", e); }
+  }
+
+  btn.disabled = false;
+  btn.textContent = "שליחה";
+  btn.style.display = "none";
+  document.getElementById("fb-thanks").style.display = "block";
+  setTimeout(closeFeedback, 1400);
 }
 
 initGate();
