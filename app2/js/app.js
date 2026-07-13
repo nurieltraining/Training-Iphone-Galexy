@@ -68,11 +68,12 @@ App.debugPanel = (function () {
     App.ui.setCategories(categories);
     App.debugPanel.logInfo("categories.json loaded: " + categories.categories.length + " items");
 
-    // Registration gate — independent, non-blocking. The app is already
-    // usable underneath; the gate is purely an overlay.
+    // Registration gate — independent, non-blocking, and optional (the
+    // person can skip it). The app is already usable underneath; the gate
+    // is purely an overlay that shows at most once.
     App.utils.safeTry(async () => {
-      const registered = await App.registration.isRegistered();
-      if (!registered) App.gateUI.show();
+      const show = await App.registration.shouldShowGate();
+      if (show) App.gateUI.show();
     });
 
     App.feedback.mount(document.body);

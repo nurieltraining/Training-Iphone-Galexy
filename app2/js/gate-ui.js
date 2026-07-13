@@ -26,6 +26,14 @@ App.gateUI = (function () {
 
   function wire(gate) {
     const submitBtn = App.utils.qs("#g-submit", gate);
+    const skipBtn = App.utils.qs("#g-skip", gate);
+    if (skipBtn && !skipBtn.dataset.wired) {
+      skipBtn.dataset.wired = "1";
+      skipBtn.addEventListener("click", async () => {
+        await App.registration.skipRegistration();
+        hide();
+      });
+    }
     if (!submitBtn || submitBtn.dataset.wired) return; // avoid double-binding
     submitBtn.dataset.wired = "1";
     submitBtn.addEventListener("click", async () => {
