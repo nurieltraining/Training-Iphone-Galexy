@@ -98,7 +98,7 @@
     background:var(--cream-2); border:1px solid var(--line); border-radius:16px; padding:16px; margin-bottom:14px; box-shadow:var(--shadow);
   }
   .quiz-q-title{font-weight:700; margin-bottom:12px; line-height:1.4;}
-  .quiz-option{
+  .quiz-option{cursor:pointer; -webkit-tap-highlight-color:rgba(53,111,128,.15);
     display:flex; align-items:flex-start; gap:8px; padding:11px 12px; border-radius:12px; border:1.5px solid var(--line);
     margin-bottom:8px; cursor:pointer; font-size:.95em; line-height:1.4; transition:background .12s ease;
   }
@@ -181,6 +181,10 @@
     box-shadow:0 10px 40px rgba(0,0,0,.3); position:relative;
   }
   .gate-title{font-size:1.35em; font-weight:800; margin:48px 0 6px; color:var(--ink); text-align:center;}
+  .gate-not-required{
+    font-size:1.15em; font-weight:800; color:var(--teal-800); text-align:center;
+    background:#eaf3ee; border:1.5px solid var(--green); border-radius:12px; padding:8px 12px; margin:0 0 10px;
+  }
   .gate-sub{font-size:.92em; color:var(--ink-soft); text-align:center; margin:0 0 20px; line-height:1.6;}
   .gate-field{margin-bottom:14px;}
   .gate-field label{display:block; font-size:.9em; font-weight:700; margin-bottom:6px; color:var(--ink);}
@@ -195,6 +199,10 @@
     font-size:1.05em; font-weight:800; cursor:pointer; margin-top:6px;
   }
   .gate-submit:disabled{opacity:.55;}
+  .gate-skip{
+    display:block; width:100%; background:none; border:none; color:var(--ink-soft);
+    font-size:.9em; text-decoration:underline; cursor:pointer; margin-top:12px; padding:8px;
+  }
   .gate-note{font-size:.75em; color:var(--ink-soft); text-align:center; margin-top:14px; line-height:1.5;}
 
   /* ---- floating feedback button + modal ---- */
