@@ -24,8 +24,17 @@ App.speech = (function () {
     hebrewVoice =
       voices.find((v) => v.lang && v.lang.toLowerCase() === "he-il") ||
       voices.find((v) => v.lang && v.lang.toLowerCase().startsWith("he")) ||
-      voices.find((v) => /hebrew/i.test(v.name || "")) ||
+      // many Android/Chrome TTS engines still report Hebrew under the old
+      // ISO code "iw" (Hebrew's code before it was renamed to "he") — without
+      // this, real Hebrew voices are missed and the browser silently falls
+      // back to a default English voice, which cannot read Hebrew at all.
+      voices.find((v) => v.lang && v.lang.toLowerCase().startsWith("iw")) ||
+      voices.find((v) => /hebrew|עברית/i.test(v.name || "")) ||
       null;
+  }
+
+  function hasHebrewVoice() {
+    return !!hebrewVoice;
   }
 
   function isSupported() {
@@ -34,7 +43,7 @@ App.speech = (function () {
 
   function speak(text, key) {
     return App.utils.safeTry(() => {
-      if (!supported) return false;
+      if (!supported || !hebrewVoice) return false; // never read aloud with a non-Hebrew voice — that produced garbled/English-sounding output
       window.speechSynthesis.cancel();
       if (speakingKey === key) {
         // toggle off if the same item is tapped again
@@ -44,7 +53,8 @@ App.speech = (function () {
       }
       const utter = new SpeechSynthesisUtterance(text);
       utter.lang = "he-IL";
-      if (hebrewVoice) utter.voice = hebrewVoice;
+      utter.voice = hebrewVoice;
+      utter.rate = 0.85; // slower and clearer, per feedback
       utter.onend = () => App.utils.safeTry(() => { speakingKey = null; notify(null); });
       utter.onerror = () => App.utils.safeTry(() => { speakingKey = null; notify(null); });
       speakingKey = key;
@@ -74,5 +84,5 @@ App.speech = (function () {
     onStateChange.forEach((fn) => App.utils.safeTry(() => fn(key)));
   }
 
-  return { init, isSupported, speak, stop, getSpeakingKey, onChange };
+  return { init, isSupported, hasHebrewVoice, speak, stop, getSpeakingKey, onChange };
 })();

@@ -95,6 +95,7 @@ App.lesson = (function () {
     const isOpen = !!openSteps[key];
     const isLearned = !!learned[key];
     const isSpeaking = App.speech.getSpeakingKey() === key;
+    const canSpeak = App.speech.isSupported() && App.speech.hasHebrewVoice();
     return (
       '<div class="step-card ' + (isOpen ? "open" : "") + " " + (isLearned ? "learned" : "") + '">' +
       '<div class="step-head" data-action="toggle-open" data-idx="' + i + '">' +
@@ -106,9 +107,11 @@ App.lesson = (function () {
       stepBodyHtml(step.text) +
       (step.warning ? warnBoxHtml(step.warning) : "") +
       '<div class="btn-row">' +
-      '<button class="btn btn-read ' + (isSpeaking ? "speaking" : "") + '" data-action="speak" data-idx="' + i + '">' +
-      (isSpeaking ? "⏹ עוצרים" : "🔊 הקריאו לי את זה") +
-      "</button>" +
+      (canSpeak
+        ? '<button class="btn btn-read ' + (isSpeaking ? "speaking" : "") + '" data-action="speak" data-idx="' + i + '">' +
+          (isSpeaking ? "⏹ עוצרים" : "🔊 הקריאו לי את זה") +
+          "</button>"
+        : '<button class="btn btn-read" disabled title="במכשיר הזה אין קול הקראה בעברית מותקן">🔇 הקראה לא זמינה במכשיר זה</button>') +
       '<button class="btn btn-learn ' + (isLearned ? "on" : "") + '" data-action="toggle-learned" data-idx="' + i + '">' +
       (isLearned ? "✓ סימנו שלמדתי" : "סמנו שלמדתי") +
       "</button>" +
