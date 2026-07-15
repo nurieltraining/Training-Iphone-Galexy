@@ -68,6 +68,9 @@ App.debugPanel = (function () {
     App.ui.setCategories(categories);
     App.debugPanel.logInfo("categories.json loaded: " + categories.categories.length + " items");
 
+    App.registration.pingVisit(currentAreaLabel()); // silent counter — never blocks or affects the UI
+    window.addEventListener("hashchange", () => App.registration.pingVisit(currentAreaLabel()));
+
     // Registration gate — independent, non-blocking, and optional (the
     // person can skip it). The app is already usable underneath; the gate
     // is purely an overlay that shows at most once.
@@ -83,6 +86,23 @@ App.debugPanel = (function () {
     App.router.start();
 
     App.debugPanel.logInfo("bootstrap done in " + Math.round(performance.now() - startTime) + "ms");
+  }
+
+  function currentAreaLabel() {
+    return App.utils.safeTry(() => {
+      const hash = window.location.hash || "#/";
+      let m = hash.match(/^#\/category\/([^/]+)/);
+      if (m) {
+        const cat = App.ui.findCategory(decodeURIComponent(m[1]));
+        return cat ? "שיעור: " + cat.title + " (" + cat.course + ")" : "שיעור: " + m[1];
+      }
+      m = hash.match(/^#\/quiz\/([^/]+)/);
+      if (m) {
+        const cat = App.ui.findCategory(decodeURIComponent(m[1]));
+        return cat ? "בוחן: " + cat.title + " (" + cat.course + ")" : "בוחן: " + m[1];
+      }
+      return "בית";
+    }, "בית");
   }
 
   function setupRoutes() {

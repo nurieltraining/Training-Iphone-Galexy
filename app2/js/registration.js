@@ -73,5 +73,22 @@ App.registration = (function () {
     return App.utils.safeTry(() => App.storage.getJSON(USER_INFO_KEY, null), null);
   }
 
-  return { isRegistered, shouldShowGate, saveRegistration, skipRegistration, getUserInfo, ENDPOINT_URL, APP_NAME };
+  function pingVisit(area) {
+    return App.utils.safeTry(() => {
+      const params = new URLSearchParams();
+      params.append("type", "visit");
+      params.append("appName", APP_NAME);
+      params.append("deviceType", App.utils.detectDeviceType());
+      params.append("area", area || "בית");
+      fetch(ENDPOINT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params.toString(),
+      }).catch(() => {}); // silent — a visit ping must never affect the app
+      return true;
+    }, false);
+  }
+
+  return { isRegistered, shouldShowGate, saveRegistration, skipRegistration, getUserInfo, pingVisit, ENDPOINT_URL, APP_NAME };
 })();
