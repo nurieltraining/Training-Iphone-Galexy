@@ -98,8 +98,9 @@ App.quiz = (function () {
         state.submitted = true;
         await saveScore(catMeta.id, quiz);
         const wrongTitles = quiz.questions
-          .filter((q, i) => state.answers[i] !== undefined && state.answers[i] !== q.correct)
-          .map((q) => q.question);
+          .map((q, i) => i)
+          .filter((i) => state.answers[i] !== undefined && state.answers[i] !== quiz.questions[i].correct)
+          .map((i) => i + 1);
         const score = quiz.questions.filter((q, i) => state.answers[i] === q.correct).length;
         App.registration.pingQuizResult(catMeta.title + " (" + catMeta.course + ")", score, quiz.questions.length, wrongTitles);
         draw(root, catMeta, quiz);

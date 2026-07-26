@@ -121,7 +121,7 @@ App.registration = (function () {
       params.append("area", area || "");
       params.append("score", String(score));
       params.append("total", String(total));
-      params.append("wrongQuestions", (wrongQuestionTitles || []).join(" | "));
+      params.append("wrongQuestions", (wrongQuestionTitles || []).join(", "));
       fetch(ENDPOINT_URL, {
         method: "POST",
         mode: "no-cors",
