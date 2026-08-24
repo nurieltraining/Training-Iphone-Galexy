@@ -10,7 +10,7 @@ App.registration = (function () {
   // Same Google Apps Script Web App used by the original single-file apps —
   // registrations/feedback keep landing in the same Google Sheet as before.
   const ENDPOINT_URL =
-    "https://script.google.com/macros/s/AKfycbwo94E4ri0aT5vf48c52sgrwkyJu49lsRzp8Bn0iRQRBE5sNNFGjHsR-sWGqTuj5YVqxA/exec";
+    "https://script.google.com/macros/s/AKfycbw6M1fZjqJx_4ey7-35FmmgvOmfCbO2cuz8JPVijDG7r8CZtN0IoSRk2YVCkgMw6pRtMQ/exec";
   const APP_NAME = "לומדים-בקלות (מאוחד)";
 
   // Registration is optional: the gate should only be shown once (either
