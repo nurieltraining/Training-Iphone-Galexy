@@ -252,8 +252,8 @@
   .textsize-btn{
     position:fixed; top:12px; left:12px; z-index:70;
     background:var(--cream-2); color:var(--teal-800); border:1.5px solid var(--line);
-    border-radius:20px; padding:10px 14px; min-height:44px; font-size:.85em; font-weight:700;
-    cursor:pointer; box-shadow:var(--shadow);
+    border-radius:18px; padding:8px 12px; min-height:44px; font-size:.78em; font-weight:700;
+    cursor:pointer; box-shadow:var(--shadow); max-width:92px; text-align:center; line-height:1.15;
   }
   .fb-btn-row{display:flex; gap:10px; margin-top:14px;}
   .fb-send{flex:1; background:var(--teal-800); color:#fff; border:none; border-radius:12px; padding:12px; font-weight:800; cursor:pointer;}
@@ -278,20 +278,23 @@
 .no-results{text-align:center; color:var(--ink-soft); padding:24px;}
 #debug-panel{direction:ltr;}
 
-/* --- course switcher (added for multi-course support) --- */
-.course-tabs{display:flex; gap:8px; margin-bottom:10px;}
+/* --- course switcher (added for multi-course support) ---
+   padding-left reserves room for the fixed text-size toggle (top:12px;left:12px;
+   ~width 100px including its own padding) so it never overlaps the last tab,
+   which - in this RTL layout - lands at the physical left edge. */
+.course-tabs{display:flex; gap:8px; margin-bottom:10px; padding-left:100px;}
 .course-tab{
   flex:1; background:var(--cream-2); border:1.5px solid var(--line); border-radius:12px;
-  padding:12px 10px; min-height:44px; font-weight:700; font-size:.95em; cursor:pointer; color:var(--ink-soft);
+  padding:12px 8px; min-height:44px; font-weight:700; font-size:.88em; cursor:pointer; color:var(--ink-soft);
 }
 .course-tab.active{background:var(--teal-800); color:#fff; border-color:var(--teal-800);}
 
-/* --- search row: search box (shrunk) + logo side by side, clear of any
-   fixed-position buttons (like the text-size toggle pinned top-left) --- */
+/* --- search row: search box (shrunk further) + bigger logo side by side,
+   clear of the fixed-position text-size toggle pinned top-left --- */
 .search-row{display:flex; align-items:center; gap:8px;}
-.search-row .search-box{flex:1; min-width:0;}
+.search-row .search-box{flex:0 1 55%; min-width:0;}
 .home-logo{
-  height:34px; width:auto; display:block; flex-shrink:0;
-  background:#fff; border-radius:10px; padding:3px 7px;
+  height:48px; width:auto; display:block; flex-shrink:0;
+  background:#fff; border-radius:10px; padding:4px 9px;
   box-shadow:0 1px 4px rgba(0,0,0,.2);
 }
