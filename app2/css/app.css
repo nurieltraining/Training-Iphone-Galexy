@@ -455,3 +455,8 @@ main{padding-bottom:110px;}
 .present-btn.secondary{background:#fff; color:var(--teal-900); border:2px solid var(--teal-800);}
 .present-btn:disabled{opacity:.35;}
 @media print{ .no-print, .present-link{display:none !important;} .handout{padding:0;} .handout-box{border-color:#999;} }
+
+/* ===== new square logo (dark background) ===== */
+.home-logo{height:44px; width:44px; padding:0; background:none; border-radius:10px; box-shadow:0 1px 6px rgba(0,0,0,.35);}
+.gate-logo{height:96px; width:96px; border-radius:16px;}
+.cert-logo{height:90px; width:90px; border-radius:14px;}

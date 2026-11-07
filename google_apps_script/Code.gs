@@ -198,6 +198,14 @@ function refreshDashboard() {
   dash.autoResizeColumns(1, 3);
 }
 
+// Run once after installing: creates ALL tabs right away (otherwise each tab
+// appears only when the first piece of data of its type arrives) and builds
+// the dashboard.
+function setupSheets() {
+  for (var key in TABS) sheet_(key);
+  refreshDashboard();
+}
+
 function installDailyTrigger() {
   ScriptApp.getProjectTriggers().forEach(function (t) {
     if (t.getHandlerFunction() === "refreshDashboard") ScriptApp.deleteTrigger(t);

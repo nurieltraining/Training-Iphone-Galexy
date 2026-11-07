@@ -78,7 +78,7 @@ App.ui = (function () {
     root.innerHTML =
       '<header class="top">' +
       '<div class="top-row">' +
-      '<div class="home-brand"><img class="home-logo" src="images/logo.webp" alt="Nuriel AI">' +
+      '<div class="home-brand"><img class="home-logo" src="images/logo-nuriel-ai.webp" alt="Nuriel AI">' +
       '<span class="app-title">לומדים בקלות</span></div>' +
       App.textSize.buttonHtml() +
       "</div>" +
@@ -253,7 +253,7 @@ App.ui = (function () {
       App.textSize.buttonHtml() + "</div></header><main>" +
       (ok
         ? '<div class="certificate" id="certificate">' +
-          '<img src="images/logo.webp" alt="" class="cert-logo">' +
+          '<img src="images/logo-nuriel-ai.webp" alt="" class="cert-logo">' +
           '<p class="cert-kicker">תעודת סיום</p>' +
           '<label class="sr-only" for="cert-name">השם על התעודה</label>' +
           '<input id="cert-name" class="cert-name" value="' + esc(name) + '" placeholder="הקלידו כאן את שמכם">' +
