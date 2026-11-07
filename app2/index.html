@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1f4550">
+<meta name="description" content="שיעורים פשוטים וברורים לשימוש בטלפון החכם: אייפון, גלקסי ושיאומי.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="images/icons/icon-192.png">
+<link rel="apple-touch-icon" href="images/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="לומדים בקלות">
+<title>לומדים בקלות</title>
+<link rel="stylesheet" href="css/app.css?v=26">
+</head>
+<body>
+
+<noscript>
+  <div style="padding:24px;font-family:sans-serif;text-align:center;direction:rtl;">
+    <p style="font-size:1.2em;font-weight:700;">האפליקציה דורשת JavaScript פעיל</p>
+    <p>נא לפתוח את הקישור ב-Safari או Chrome, לא בתצוגה מקדימה של אפליקציה אחרת.</p>
+  </div>
+</noscript>
+
+<div class="app" id="app"></div>
+
+<div id="gate" role="dialog" aria-modal="true" aria-label="הרשמה לאפליקציה" style="display:none;">
+  <div class="gate-card">
+    <img class="gate-logo" src="images/logo.webp" alt="Nuriel AI">
+    <p class="gate-title">ברוכים הבאים ללומדים בקלות</p>
+    <p class="gate-not-required">לא חובה להירשם!</p>
+    <button type="button" class="gate-skip gate-skip-top" id="g-skip">להמשיך בלי להירשם</button>
+    <p class="gate-sub">או למלא כמה פרטים קצרים לפני שממשיכים:</p>
+    <div class="gate-field"><label for="g-first">שם פרטי</label><input id="g-first" type="text" autocomplete="given-name"></div>
+    <div class="gate-field"><label for="g-last">שם משפחה</label><input id="g-last" type="text" autocomplete="family-name"></div>
+    <div class="gate-field"><label for="g-phone">מספר טלפון</label><input id="g-phone" type="tel" inputmode="tel" autocomplete="tel" dir="ltr"></div>
+    <div class="gate-field"><label for="g-email">אימייל</label><input id="g-email" type="email" inputmode="email" autocomplete="email" dir="ltr"></div>
+    <div class="gate-field"><label for="g-city">עיר</label><input id="g-city" type="text" autocomplete="address-level2"></div>
+    <div class="gate-field"><label for="g-org">שם המסגרת</label><input id="g-org" type="text"></div>
+    <p class="gate-error" id="g-error" role="alert" style="display:none;">נא למלא את כל השדות (כולל אימייל תקין)</p>
+    <button type="button" class="gate-submit" id="g-submit">כניסה לאפליקציה</button>
+    <p class="gate-note">הפרטים נשלחים לרישום שימוש בלבד ואינם מוצגים לאף משתמש אחר. <button type="button" class="link-btn" data-privacy="1">מה בדיוק נאסף?</button></p>
+  </div>
+</div>
+
+<!--
+  Script load order matters: each module attaches itself to window.App and may
+  depend on ones loaded before it. utils.js must always load first.
+  Everything here is small (core shell only) — no lesson or quiz content,
+  no images, no JSON, is loaded by this HTML file itself.
+-->
+<script src="js/utils.js?v=26"></script>
+<script src="js/storage.js?v=26"></script>
+<script src="js/loader.js?v=26"></script>
+<script src="js/router.js?v=26"></script>
+<script src="js/speech.js?v=26"></script>
+<script src="js/registration.js?v=26"></script>
+<script src="js/gate-ui.js?v=26"></script>
+<script src="js/feedback.js?v=26"></script>
+<script src="js/privacy.js?v=26"></script>
+<script src="js/textsize.js?v=26"></script>
+<script src="js/search.js?v=26"></script>
+<script src="js/sync.js?v=26"></script>
+<script src="js/diagrams.js?v=26"></script>
+<script src="js/lesson.js?v=26"></script>
+<script src="js/quiz.js?v=26"></script>
+<script src="js/instructor.js?v=26"></script>
+<script src="js/ui.js?v=26"></script>
+<script src="js/app.js?v=26"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+# packaged releases are build outputs - the repo history replaces them
+*.zip
+__pycache__/
+*.pyc
+.claude/
+~$*
