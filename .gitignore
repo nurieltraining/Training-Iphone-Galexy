@@ -4,3 +4,14 @@ __pycache__/
 *.pyc
 .claude/
 ~$*
+
+# internal files - kept on this computer only, never uploaded (the repo is public)
+סילבוס_טלפון_חכם_ו_AI.xlsx
+sample_safety_ar.docx
+סמלי קטגוריות/
+BEDIKA_V22.md
+פרומפטים_לתמונות_נושאים_חדשים.md
+מדריך_התקנה.md
+בדיקה_רבעונית_*.md
+*.xlsx
+*.docx
