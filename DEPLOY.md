@@ -1,43 +1,37 @@
-# פרסום האפליקציה בכתובת HTTPS
+# פרסום האפליקציה
 
-כשהאפליקציה מוגשת ב-HTTPS, עובדים גם מצב לא מקוון והתקנה למסך הבית. יש שתי דרכים לפרסם אותה.
+האפליקציה **כבר מפורסמת ב-HTTPS** דרך GitHub Pages, מהמאגר
+https://github.com/nurieltraining/Training-Iphone-Galexy
 
-## דרך א: Netlify (הכי פשוט, בלי חשבון מתכנת)
+**כתובת האפליקציה:** https://nurieltraining.github.io/Training-Iphone-Galexy/app2/
 
-1. נכנסים ל-https://app.netlify.com/drop.
-2. גוררים לחלון את **התיקייה `app2`**. גוררים את התיקייה עצמה, לא את קובץ ה-zip.
-3. אחרי כמה שניות מתקבלת כתובת כמו `https://xxxx.netlify.app`. אפשר לשנות את השם בהגדרות האתר.
-4. בכל עדכון גוררים שוב את `app2`, באותו מסך של אותו אתר (Deploys > drag and drop).
+- **ההגדרה הנוכחית:** ב-Settings > Pages מוגדר "Deploy from a branch", ענף `main`, תיקייה `/ (root)`. אין לשנות אותה, כי שינוי יזיז את האתר לכתובת אחרת, והקישורים וההתקנות הקיימות אצל המשתמשים יישברו.
+- **מצב לא מקוון והתקנה למסך הבית:** עובדים בכתובת הזו, כי היא HTTPS.
 
-## דרך ב: GitHub Pages (עם היסטוריית גרסאות)
-
-התיקייה כבר מוכנה כמאגר Git, וקובץ הפרסום `.github/workflows/pages.yml` כבר בפנים.
-
-1. פותחים מאגר חדש ב-GitHub, למשל `lomdim-bekalut`.
-2. בתיקיית הפרויקט מריצים:
-   ```
-   git remote add origin https://github.com/<שם-המשתמש>/lomdim-bekalut.git
-   git push -u origin main
-   ```
-3. ב-GitHub נכנסים ל-**Settings > Pages**, וב-**Source** בוחרים **GitHub Actions**.
-4. אחרי דקה-שתיים האתר זמין בכתובת `https://<שם-המשתמש>.github.io/lomdim-bekalut/`.
-
-## לפני כל פרסום של עדכון
+## איך מעדכנים את האתר
 
 1. מריצים:
    ```
    python tools/check_content.py
    ```
    צריך לקבל 0 שגיאות.
-2. אם עדכנתם שיעורים, מריצים:
+2. אם שיניתם שיעורים, מריצים:
    ```
    python tools/build_search_index.py
    ```
 3. מעלים את מספר הגרסה בשני קבצים:
-   - ב-`app2/index.html` וב-`app2/sw.js`: מחליפים `?v=26` ב-`?v=27`.
+   - ב-`app2/index.html` וב-`app2/sw.js`: מחליפים `?v=27` ב-`?v=28`.
    - ב-`app2/sw.js`: מעדכנים גם את `CACHE_VERSION`.
-4. שומרים גרסה ב-Git:
+4. שומרים ומעלים:
    ```
    git add -A
    git commit -m "תיאור השינוי"
+   git push
    ```
+5. אחרי 1-3 דקות האתר מתעדכן. את ההתקדמות רואים ב-GitHub, בלשונית **Actions**, בריצה בשם "pages build and deployment".
+
+**חשוב:** לא מעלים קבצים בגרירה לאתר GitHub. מעלים רק עם `git push`, כדי שההיסטוריה תישמר.
+
+## חלופה: Netlify
+
+אפשר לפרסם עותק נוסף בכתובת אחרת: נכנסים ל-https://app.netlify.com/drop וגוררים את התיקייה `app2`. בדרך כלל אין בזה צורך.
