@@ -31,9 +31,30 @@ App.ui = (function () {
     return categoriesData ? categoriesData.categories.find((c) => c.id === id) : null;
   }
 
-  // Next category in the same course (display order), or null at the end.
+  // Learning order = the course path from syllabus.json (session 1 core,
+  // then its extension lessons, session 2 ...), followed by any topics the
+  // path doesn't mention, in display order. "Next lesson" follows this, so
+  // it matches the course sessions rather than the order of the topic grid.
+  let syllabusData = null;
+  function setSyllabus(s) { syllabusData = s; }
+
+  function learningOrder(course) {
+    const seen = {};
+    const out = [];
+    const add = (c) => { if (c && !seen[c.id]) { seen[c.id] = 1; out.push(c); } };
+    if (syllabusData) {
+      syllabusData.sessions.forEach((s) => {
+        s.core.forEach((b) => add(catForBase(b, course)));
+        s.extra.forEach((b) => add(catForBase(b, course)));
+      });
+    }
+    categoriesForCourse(course).forEach(add);
+    return out;
+  }
+
+  // Next category in the same course's learning order, or null at the end.
   function nextCategory(cat) {
-    const list = categoriesForCourse(cat.course);
+    const list = learningOrder(cat.course);
     const i = list.findIndex((c) => c.id === cat.id);
     return i >= 0 && i < list.length - 1 ? list[i + 1] : null;
   }
@@ -114,7 +135,8 @@ App.ui = (function () {
       "</div>" +
       '<div id="search-results" class="search-results" style="display:none;" aria-live="polite"></div>' +
       '<footer class="home-footer"><button type="button" class="link-btn" data-sync="1">🔄 ההתקדמות שלי במכשיר חדש</button>' +
-      '<button type="button" class="link-btn" data-privacy="1">🔒 פרטיות ומידע אישי</button></footer>' +
+      '<button type="button" class="link-btn" data-privacy="1">🔒 פרטיות ומידע אישי</button>' +
+      '<p class="copyright">© 2026 Nuriel AI · כל הזכויות שמורות. אין להעתיק או להפיץ את התכנים ללא אישור.</p></footer>' +
       "</main>";
 
     App.utils.qsa(".view-btn", root).forEach((btn) =>
@@ -282,7 +304,9 @@ App.ui = (function () {
       (showNewBadge ? '<span class="new-badge">חדש</span>' : "") +
       (complete ? '<span class="done-badge" aria-hidden="true">✓</span>' : "") +
       '<span class="cat-img-wrap">' + iconHtml(cat) + "</span>" +
-      '<span class="cat-name">' + esc(cat.title) + "</span>" +
+      // the card image already shows the topic name, so the text is for
+      // screen readers only; cards without an image still show it
+      '<span class="cat-name' + (cat.image ? " sr-only" : "") + '">' + esc(cat.title) + "</span>" +
       '<span class="cat-bottom">' +
       '<span class="cat-frac">' + done + "/" + cat.stepCount + (best ? " · 📝" + best : "") + "</span>" +
       '<span class="level-badge level-' + esc(cat.difficulty || "") + '">' + esc(cat.difficulty || "") + "</span>" +
@@ -301,7 +325,7 @@ App.ui = (function () {
   }
 
   return {
-    setCategories, findCategory, renderHome, renderCertificate, nextCategory, rememberLastCategory,
+    setCategories, setSyllabus, findCategory, renderHome, renderCertificate, nextCategory, rememberLastCategory,
     catForBase, courseName, currentCourse: () => currentCourse,
   };
 })();

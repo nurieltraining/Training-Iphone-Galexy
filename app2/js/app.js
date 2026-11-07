@@ -82,6 +82,8 @@ App.debugPanel = (function () {
       return;
     }
     App.ui.setCategories(categories);
+    // course path order for "next lesson" (optional - falls back to topic order)
+    App.ui.setSyllabus(await App.loader.getSyllabus());
     App.debugPanel.logInfo("categories.json loaded: " + categories.categories.length + " items");
 
     App.registration.pingVisit(currentAreaLabel()); // silent counter — never blocks or affects the UI

@@ -1146,7 +1146,8 @@
    "lessonFile": "lessons/lesson_simplemode.json",
    "quizFile": "quizzes/quiz_simplemode.json",
    "stepCount": 7,
-   "isNew": true
+   "isNew": true,
+   "image": "images/simple-mode.webp"
   },
   {
    "id": "accounts",
@@ -1158,7 +1159,8 @@
    "lessonFile": "lessons/lesson_accounts.json",
    "quizFile": "quizzes/quiz_accounts.json",
    "stepCount": 7,
-   "isNew": true
+   "isNew": true,
+   "image": "images/accounts.webp"
   },
   {
    "id": "shopping",
@@ -1170,7 +1172,8 @@
    "lessonFile": "lessons/lesson_shopping.json",
    "quizFile": "quizzes/quiz_shopping.json",
    "stepCount": 7,
-   "isNew": true
+   "isNew": true,
+   "image": "images/shopping.webp"
   },
   {
    "id": "abroad",
@@ -1182,7 +1185,8 @@
    "lessonFile": "lessons/lesson_abroad.json",
    "quizFile": "quizzes/quiz_abroad.json",
    "stepCount": 7,
-   "isNew": true
+   "isNew": true,
+   "image": "images/abroad.webp"
   },
   {
    "id": "meds",
@@ -1194,7 +1198,8 @@
    "lessonFile": "lessons/lesson_meds.json",
    "quizFile": "quizzes/quiz_meds.json",
    "stepCount": 6,
-   "isNew": true
+   "isNew": true,
+   "image": "images/meds.webp"
   },
   {
    "id": "aiprompts",
@@ -1206,7 +1211,8 @@
    "lessonFile": "lessons/lesson_aiprompts.json",
    "quizFile": "quizzes/quiz_aiprompts.json",
    "stepCount": 7,
-   "isNew": true
+   "isNew": true,
+   "image": "images/ai-prompts.webp"
   },
   {
    "id": "aicreate",
@@ -1218,7 +1224,8 @@
    "lessonFile": "lessons/lesson_aicreate.json",
    "quizFile": "quizzes/quiz_aicreate.json",
    "stepCount": 7,
-   "isNew": true
+   "isNew": true,
+   "image": "images/ai-create.webp"
   },
   {
    "id": "galaxy_simplemode",
@@ -1230,7 +1237,8 @@
    "lessonFile": "lessons/lesson_galaxy_simplemode.json",
    "quizFile": "quizzes/quiz_galaxy_simplemode.json",
    "stepCount": 7,
-   "isNew": true
+   "isNew": true,
+   "image": "images/simple-mode.webp"
   },
   {
    "id": "galaxy_accounts",
@@ -1242,7 +1250,8 @@
    "lessonFile": "lessons/lesson_galaxy_accounts.json",
    "quizFile": "quizzes/quiz_galaxy_accounts.json",
    "stepCount": 7,
-   "isNew": true
+   "isNew": true,
+   "image": "images/accounts.webp"
   },
   {
    "id": "galaxy_shopping",
@@ -1254,7 +1263,8 @@
    "lessonFile": "lessons/lesson_galaxy_shopping.json",
    "quizFile": "quizzes/quiz_galaxy_shopping.json",
    "stepCount": 7,
-   "isNew": true
+   "isNew": true,
+   "image": "images/shopping.webp"
   },
   {
    "id": "galaxy_abroad",
@@ -1266,7 +1276,8 @@
    "lessonFile": "lessons/lesson_galaxy_abroad.json",
    "quizFile": "quizzes/quiz_galaxy_abroad.json",
    "stepCount": 7,
-   "isNew": true
+   "isNew": true,
+   "image": "images/abroad.webp"
   },
   {
    "id": "galaxy_meds",
@@ -1278,7 +1289,8 @@
    "lessonFile": "lessons/lesson_galaxy_meds.json",
    "quizFile": "quizzes/quiz_galaxy_meds.json",
    "stepCount": 6,
-   "isNew": true
+   "isNew": true,
+   "image": "images/meds.webp"
   },
   {
    "id": "galaxy_aiprompts",
@@ -1290,7 +1302,8 @@
    "lessonFile": "lessons/lesson_galaxy_aiprompts.json",
    "quizFile": "quizzes/quiz_galaxy_aiprompts.json",
    "stepCount": 7,
-   "isNew": true
+   "isNew": true,
+   "image": "images/ai-prompts.webp"
   },
   {
    "id": "galaxy_aicreate",
@@ -1302,7 +1315,8 @@
    "lessonFile": "lessons/lesson_galaxy_aicreate.json",
    "quizFile": "quizzes/quiz_galaxy_aicreate.json",
    "stepCount": 7,
-   "isNew": true
+   "isNew": true,
+   "image": "images/ai-create.webp"
   },
   {
    "id": "xiaomi_simplemode",
@@ -1314,7 +1328,8 @@
    "lessonFile": "lessons/lesson_xiaomi_simplemode.json",
    "quizFile": "quizzes/quiz_xiaomi_simplemode.json",
    "stepCount": 7,
-   "isNew": true
+   "isNew": true,
+   "image": "images/simple-mode.webp"
   },
   {
    "id": "xiaomi_accounts",
@@ -1326,7 +1341,8 @@
    "lessonFile": "lessons/lesson_xiaomi_accounts.json",
    "quizFile": "quizzes/quiz_xiaomi_accounts.json",
    "stepCount": 7,
-   "isNew": true
+   "isNew": true,
+   "image": "images/accounts.webp"
   },
   {
    "id": "xiaomi_shopping",
@@ -1338,7 +1354,8 @@
    "lessonFile": "lessons/lesson_xiaomi_shopping.json",
    "quizFile": "quizzes/quiz_xiaomi_shopping.json",
    "stepCount": 7,
-   "isNew": true
+   "isNew": true,
+   "image": "images/shopping.webp"
   },
   {
    "id": "xiaomi_abroad",
@@ -1350,7 +1367,8 @@
    "lessonFile": "lessons/lesson_xiaomi_abroad.json",
    "quizFile": "quizzes/quiz_xiaomi_abroad.json",
    "stepCount": 7,
-   "isNew": true
+   "isNew": true,
+   "image": "images/abroad.webp"
   },
   {
    "id": "xiaomi_meds",
@@ -1362,7 +1380,8 @@
    "lessonFile": "lessons/lesson_xiaomi_meds.json",
    "quizFile": "quizzes/quiz_xiaomi_meds.json",
    "stepCount": 6,
-   "isNew": true
+   "isNew": true,
+   "image": "images/meds.webp"
   },
   {
    "id": "xiaomi_aiprompts",
@@ -1374,7 +1393,8 @@
    "lessonFile": "lessons/lesson_xiaomi_aiprompts.json",
    "quizFile": "quizzes/quiz_xiaomi_aiprompts.json",
    "stepCount": 7,
-   "isNew": true
+   "isNew": true,
+   "image": "images/ai-prompts.webp"
   },
   {
    "id": "xiaomi_aicreate",
@@ -1386,7 +1406,8 @@
    "lessonFile": "lessons/lesson_xiaomi_aicreate.json",
    "quizFile": "quizzes/quiz_xiaomi_aicreate.json",
    "stepCount": 7,
-   "isNew": true
+   "isNew": true,
+   "image": "images/ai-create.webp"
   }
  ]
 }
