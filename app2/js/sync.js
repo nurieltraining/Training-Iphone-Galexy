@@ -17,6 +17,20 @@ App.sync = (function () {
   const LAST_CAT = "app2-last-cat";
   const LAST_SYNC = "app2-last-sync";
   let timer = null;
+  let ready = null; // Promise<boolean>: is the v26+ backend (with progress sync) installed?
+
+  // The older Sheets script has no progress support and would log a sync
+  // request as an empty row, so sync only runs when the endpoint identifies
+  // itself as the new backend (its doGet replies {"app":"lomdim-bekalut"}).
+  function backendReady() {
+    if (!ready) {
+      ready = fetch(App.registration.ENDPOINT_URL)
+        .then((r) => r.json())
+        .then((j) => !!(j && j.app === "lomdim-bekalut"))
+        .catch(() => false);
+    }
+    return ready;
+  }
 
   function norm(phone, email) {
     return {
@@ -52,6 +66,7 @@ App.sync = (function () {
   async function push() {
     const info = await App.registration.getUserInfo();
     if (!info || !info.phone || !info.email) return false; // only registered users
+    if (!(await backendReady())) return false;
     const id = norm(info.phone, info.email);
     const data = await snapshot();
     await post({ type: "progress_sync", phone: id.phone, email: id.email, appName: App.registration.APP_NAME, progress: data })
@@ -72,6 +87,7 @@ App.sync = (function () {
   async function restore(phone, email) {
     const id = norm(phone, email);
     if (id.phone.length < 9 || id.email.indexOf("@") < 1) return { ok: false, reason: "details" };
+    if (!(await backendReady())) return { ok: false, reason: "backend" };
     let res;
     try {
       const r = await post({ type: "progress_get", phone: id.phone, email: id.email });
@@ -140,6 +156,7 @@ App.sync = (function () {
           details: "נא להקליד טלפון ואימייל מלאים.",
           network: "אין חיבור כרגע - נסו שוב כשיש אינטרנט.",
           notfound: "לא נמצאה התקדמות שמורה עם הפרטים האלה. ודאו שאלה אותם פרטים שאיתם נרשמתם.",
+          backend: "שמירת ההתקדמות עדיין לא הופעלה במערכת. נסו שוב בהמשך.",
         }[r.reason] || "משהו השתבש - נסו שוב.";
       }
     });
