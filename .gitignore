@@ -15,3 +15,7 @@ BEDIKA_V22.md
 בדיקה_רבעונית_*.md
 *.xlsx
 *.docx
+
+# local clasp working copy + backups of the live script (contains sheet ID)
+google_apps_script/live/
+google_apps_script/backup_*/
