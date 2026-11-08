@@ -8,7 +8,7 @@
  * Request types (the app already sends all of these). Tab names and column
  * order match the original script, so existing data continues in place;
  * a sessionId column is added at the end where relevant.
- *   (no type)      registration            -> tab "הרשמות" (or the first tab)
+ *   (no type)      registration            -> tab "הרשמות" (created if missing)
  *   visit          page view               -> tab "כניסות"
  *   quiz_result    quiz score + wrong Qs   -> tab "תוצאות בוחן"
  *   lesson_step    step marked learned     -> tab "התקדמות בשיעורים"
@@ -107,9 +107,11 @@ function sheet_(key) {
   var def = TABS[key];
   var ss = ss_();
   var sh = ss.getSheetByName(def[0]);
-  // like the original script: registrations go to the first tab if there is no "הרשמות" tab
-  if (!sh && key === "registration") sh = ss.getSheets()[0];
-  if (sh && sh.getLastRow() > 0 && sh.getLastColumn() < def[1].length) {
+  // existing tab from the old script: add any missing header cells (e.g.
+  // sessionId) - only when row 1 really is a header (its first cell is text,
+  // not a date), so a data row is never overwritten with titles
+  if (sh && sh.getLastRow() > 0 && sh.getLastColumn() < def[1].length &&
+      !(sh.getRange(1, 1).getValue() instanceof Date)) {
     // existing tab from the old script: add the new header cells (e.g. sessionId)
     sh.getRange(1, sh.getLastColumn() + 1, 1, def[1].length - sh.getLastColumn())
       .setValues([def[1].slice(sh.getLastColumn())]);
