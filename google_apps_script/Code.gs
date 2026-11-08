@@ -17,6 +17,10 @@
  * Install: see README.md in this folder. Keep a copy of your old script first.
  */
 
+// Email alerts go to the Google account that owns this script ("Execute as: Me"),
+// so no address is written in the code. Set to false to turn a type off.
+var NOTIFY = { registration: true, feedback: true };
+
 var TABS = {
   registration: ["הרשמות", ["זמן", "שם פרטי", "שם משפחה", "טלפון", "אימייל", "עיר", "מסגרת", "מכשיר", "אפליקציה"]],
   visit: ["ביקורים", ["זמן", "אזור", "מכשיר", "sessionId", "אפליקציה"]],
@@ -35,17 +39,42 @@ function doPost(e) {
     if (type === "progress_get") return json_(getProgress_(p));
     if (type === "progress_sync") { saveProgress_(p); return json_({ ok: true }); }
     var now = new Date();
-    if (type === "registration") append_("registration", [now, p.firstName, p.lastName, "'" + (p.phone || ""), p.email, p.city, p.org, p.deviceType, p.appName]);
+    if (type === "registration") {
+      append_("registration", [now, p.firstName, p.lastName, "'" + (p.phone || ""), p.email, p.city, p.org, p.deviceType, p.appName]);
+      if (NOTIFY.registration) notify_("נרשם חדש: " + (p.firstName || "") + " " + (p.lastName || ""), [
+        "שם: " + (p.firstName || "") + " " + (p.lastName || ""), "טלפון: " + (p.phone || ""), "אימייל: " + (p.email || ""),
+        "עיר: " + (p.city || ""), "מסגרת: " + (p.org || ""), "מכשיר: " + (p.deviceType || "")]);
+    }
     else if (type === "visit") append_("visit", [now, p.area, p.deviceType, p.sessionId, p.appName]);
     else if (type === "quiz_result") append_("quiz_result", [now, p.area, Number(p.score), Number(p.total), p.wrongQuestions, p.deviceType, p.sessionId]);
     else if (type === "lesson_step") append_("lesson_step", [now, p.area, Number(p.stepIndex) + 1, p.stepTitle, p.marked, p.deviceType, p.sessionId]);
-    else if (type === "feedback") append_("feedback", [now, p.firstName, p.lastName, "'" + (p.phone || ""), p.context, p.comment, p.deviceType, p.sessionId]);
+    else if (type === "feedback") {
+      append_("feedback", [now, p.firstName, p.lastName, "'" + (p.phone || ""), p.context, p.comment, p.deviceType, p.sessionId]);
+      if (NOTIFY.feedback) notify_("משוב חדש מהאפליקציה" + (p.context ? " - " + p.context : ""), [
+        "ההודעה: " + (p.comment || ""), "", "מאת: " + ([p.firstName, p.lastName].filter(Boolean).join(" ") || "משתמש לא רשום"),
+        "טלפון: " + (p.phone || "-"), "נושא באפליקציה: " + (p.context || "-"), "מכשיר: " + (p.deviceType || "")]);
+    }
     return json_({ ok: true });
   } catch (err) {
     return json_({ ok: false, error: String(err) });
   } finally {
     lock.releaseLock();
   }
+}
+
+// Sends an email to the script owner. Never lets a mail problem block logging.
+function notify_(subject, lines) {
+  try {
+    var to = Session.getEffectiveUser().getEmail();
+    if (!to) return;
+    var url = SpreadsheetApp.getActiveSpreadsheet().getUrl();
+    MailApp.sendEmail(to, "לומדים בקלות | " + subject, lines.join("\n") + "\n\nהגיליון: " + url);
+  } catch (err) { /* mail quota / permission - ignore */ }
+}
+
+// Run once by hand to check that alerts reach your inbox.
+function testEmail() {
+  notify_("בדיקת התראות", ["אם קיבלת את המייל הזה, ההתראות עובדות."]);
 }
 
 function doGet() {
